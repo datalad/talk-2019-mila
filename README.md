@@ -6,6 +6,7 @@ efforts and helps achieve improved reproducibility in a FAIR way.
 Presented at the Bernstein Conference workshop *Practical approaches to
 research data management and reproducibility* in Berlin, 2018.
 
+To see the slides go to: https://rawgit.com/psychoinformatics-de/talk-datalad-gofair/master/index.html
 
 ## License
 
