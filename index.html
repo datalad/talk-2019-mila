@@ -1,0 +1,527 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Go FAIR with DataLad</title>
+
+  <meta name="description" content="Talk on DataLad">
+  <meta name="author" content="Michael Hanke and Yaroslav Halchenko">
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <link rel="stylesheet" href="reveal.js/css/theme/beige.css" id="theme">
+  <link rel="stylesheet" href="s.css" id="theme">
+  <!-- Code syntax highlighting -->
+  <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <link rel="stylesheet" href="s.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->
+<!--<style type="text/css">
+    dt, dd { display: inline-block; float: left; }
+    dt { clear: left; }
+</style>
+-->
+</head>
+<body>
+
+<div class="reveal">
+
+<!-- Any section element inside of this container is displayed as a slide -->
+<div class="slides">
+<section>
+  <h1 style="text-transform:none">Go FAIR with DataLad</h1>
+  <p style="margin-top:-10px"><a href="http://datalad.org">http://datalad.org</a></p>
+  <div style="margin-top:1em;text-align:center">
+      Michael Hanke<br />
+      <small><p>Psychoinformatics lab, Institute of Psychology,
+      University of Magdeburg<br>
+      Center for Behavioral Brain Sciences, Magdeburg</p></small>
+  </div>
+  <div style="margin-top:1em">
+  <img style="height:150px;margin-right:50px" data-src="pics/nsf.png" />
+  <img style="height:150px;margin-right:50pxi;margin-left:50px" data-src="pics/binc.png" />
+  <img style="height:150px;margin-left:50px" data-src="pics/bmbf.png" />
+  <br />
+  <img style="height:80px;margin:20px" data-src="pics/erdf.png" />
+  <img style="height:80px;margin:20px" data-src="pics/LSA-Logo.png" />
+  </div>
+</section>
+
+
+<section>
+<section>
+  <ul style="list-style-type:none">
+    <li><h1 style="display:inline">F</h1>indable</li>
+    <li><h1 style="display:inline">A</h1>ccessible</li>
+    <li><h1 style="display:inline">I</h1>nteroperable</li>
+    <li><h1 style="display:inline">R</h1>eusable</li>
+  </ul>
+  <note><a href="https://www.go-fair.org/fair-principles">https://www.go-fair.org/fair-principles</a></note>
+</section>
+
+<section style="font-size:80%;text-align:left">
+    <h2 style="text-align:center">FAIR principles</h2>
+        <dl style="width:100%">
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">F1</dt><dd>(Meta)data are assigned a globally unique and persistent identifier</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">F2</dt><dd>Data are described with rich metadata</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">F3</dt><dd>Metadata clearly and explicitly include the identifier of the data they describe</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">F4</dt><dd>(Meta)data are registered or indexed in a searchable resource</dd>
+        </dl>
+    <hr />
+        <dl style="width:100%">
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">A1</dt><dd>(Meta)data are retrievable by their identifier using a standardised ... protocol</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">A1.1</dt><dd>The protocol is open, free, and universally implementable</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">A1.2</dt><dd>The protocol allows for an authentication and authorisation procedure</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">A2</dt><dd>Metadata are accessible, even when the data are no longer available</dd>
+        </dl>
+    <hr />
+        <dl style="width:100%">
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">I1</dt><dd>(Meta)data use a formal, accessible ... language for knowledge representation.</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">I2</dt><dd>(Meta)data use vocabularies that follow FAIR principles</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">I3</dt><dd>(Meta)data include qualified references to other (meta)data</dd>
+        </dl>
+    <hr />
+        <dl style="width:100%">
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">R1</dt><dd>Meta(data) are richly described with a plurality of accurate and relevant attributes</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">R1.1</dt><dd>(Meta)data are released with a clear and accessible data usage license</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">R1.2</dt><dd>(Meta)data are associated with detailed provenance</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">R1.3</dt><dd>(Meta)data meet domain-relevant community standards</dd>
+        </dl>
+    </dl>
+  <note><a href="https://www.go-fair.org/fair-principles">https://www.go-fair.org/fair-principles</a></note>
+</section>
+
+<section>
+  <h2>To whom should we be FAIR?</h2>
+  <blockquote>
+      [...] The intent is that these may act as a guideline for those wishing to
+      enhance the reusability of their data holdings.
+  </blockquote>
+  <note>Wilkinson, M. D., Dumontier, M., Aalbersberg, I. J., Appleton, G., Axton, M., Baak, A., ... &amp; Bouwman, J. (2016). The FAIR Guiding Principles for scientific data management and stewardship. Scientific data, 3.</note>
+</section>
+
+<section>
+  <h2>With whom do we share our data holdings?</h2>
+  <img style="margin-top:-20px" data-src="pics/sharing_pie.svg">
+  <note>[fictional figure &mdash; reality is likely worse]</note>
+  <aside class="notes">most of us share data, hardly anyone shares publicly<aside>
+</section>
+
+
+<section>
+  <h1>DataLad</h1>
+  <p style="margin-top:100px">A data management suite that makes <strong>YOU</strong> more productive...</p>
+
+  <p style="margin-top:100px">...and <em>also</em> yields FAIR resources<br />that you can share with anyone you see fit.</p>
+</section>
+</section>
+
+
+<section data-transition="fade">
+<section>
+    <h2>Datalad principles</h2>
+    <ul style="font-size:120%">
+        <li style="margin-bottom:1em">There are only two things in the world: <strong>datasets and files</strong>.</li>
+        <li style="margin-bottom:1em">A <strong>dataset is a Git repository</strong>.</li>
+        <li style="margin-bottom:1em">A dataset can have an <strong>optional <em>annex</em></strong> for (large) file content tracking (transport to and from the annex managed with Git-annex, <a href="https://git-annex.branchable.com">https://git-annex.branchable.com</a>).</li>
+        <li style="margin-bottom:1em">Minimization of custom procedures and data structures: <strong>Users must not loose data or data access</strong>, if DataLad would vanish.</li>
+        <li style="margin-bottom:1em"><strong>Complete decentralization</strong>, no required central server or service.</li>
+        <li style="margin-bottom:1em">Maximize use of existing 3rd-party infrastructure.</li>
+    </ul>
+
+</section>
+
+<section>
+  <h2>Dataset: tracking content and/or its identifiers</h2>
+  <img style="" data-src="pics/dataset_concept.png">
+  <dl>
+      <dt>Dataset ID, Dataset annex (local) storage ID</dt><dd>two distinct UUIDs</dd>
+      <dt>Dataset version (Git repository state)</dt><dd>SHASUM</dd>
+  <dt>File key</dt><dd>configurable checksum (file content based)</dd>
+  </dl>
+</section>
+</section>
+
+<section>
+  <section data-transition="fade">
+    <h2>Install an existing dataset</h2>
+    <img data-src="pics/dl_download_ds02.png">
+    <p style="margin-top:-2em">request via standard URL,<br />but dataset ID resolver is possible</p>
+    <pre class="codefootnote"><code class="bash">$ datalad install http://example.com/ds1</code></pre>
+  </section>
+  <section data-transition="fade">
+    <h2>Obtain dataset content</h2>
+    <img data-src="pics/dl_download_ds05.png">
+    <p style="margin-top:-2em">request via user-friendly local file path, not internal ID,<br />regardless of remote actual storage solution properties</p>
+    <pre class="codefootnote"><code class="bash">ds1/ $ datalad get file2</code></pre>
+    <aside class="notes">obtain individual files or groups thereof or all of them, but it is all about FILES!</aside>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Tracking "remote" data evolution</h2>
+    <img data-src="pics/dl_download_ds08.png">
+    <p style="margin-top:-2em">ability to track any number of dataset "siblings",<br /> in Git or non-Git data stores</p>
+    <pre class="codefootnote"><code class="bash">ds1/ $ datalad update</code></pre>
+    <aside class="notes">an update becomes available</aside>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Keep up-to-date</h2>
+    <img data-src="pics/dl_download_ds11.png">
+    <p style="margin-top:-2em">apply changes from default or selected sibling<br />while maintaining local data availability status</p>
+    <pre class="codefootnote"><code class="bash">ds1/ $ datalad update --merge --reobtain-data</code></pre>
+    <aside class="notes">but it can also be done all in one step</aside>
+  </section>
+</section>
+
+
+<section>
+<section>
+  <h2>Dataset linkage</h2>
+<img data-src="pics/dataset_linkage.png">
+<pre><code class="diff" style="max-height:none">$ datalad install --dataset . --source http://example.com/importantds inputs/rawdata
+
+$ git diff HEAD~1
+diff --git a/.gitmodules b/.gitmodules
+new file mode 100644
+index 0000000..c3370ba
+--- /dev/null
++++ b/.gitmodules
+@@ -0,0 +1,3 @@
++[submodule "inputs/rawdata"]
++       path = inputs/rawdata
++       url = http://example.com/importantds
+diff --git a/inputs/rawdata b/inputs/rawdata
+new file mode 160000
+index 0000000..fabf852
+--- /dev/null
++++ b/inputs/rawdata
+@@ -0,0 +1 @@
++Subproject commit fabf8521130a13986bd6493cb33a70e580ce8572
+</code></pre>
+</section>
+
+<section>
+  <h2>Arbitrarily deep dataset nesting</h2>
+  <img style="" height="800px" data-src="pics/virtual_dirtree.png">
+
+  <p>"actionable" links to subdatasets/files, seamless handling of dataset trees</p>
+</section>
+
+</section>
+
+<section>
+<section>
+  <h2>Data provenance capture</h2>
+  <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
+<pre><code class="bash" style="max-height:none">$ datalad run -m "Perform eye movement event detection"\
+  --input 'inputs/raw_eyegaze/sub-*/beh/sub-*...tsv.gz' \
+  --output 'sub-*' \
+  bash code/compute_all.sh
+
+-- Git commit -- Michael Hanke &lt;michael.hanke@gmail.com&gt;; Fri Sep 21 22:00:47 2018
+    [DATALAD RUNCMD] Perform eye movement event detection
+    === Do not change lines below ===
+    {
+     "cmd": "bash code/compute_all.sh",
+     "dsid": "d2b4b72a-7c13-11e7-9f1f-a0369f7c647e",
+     "exit": 0,
+     "inputs": ["inputs/raw_eyegaze/sub-*/beh/sub-*_task-movie_run-*_....tsv.gz"],
+     "outputs": ["sub-*"],
+     "pwd": "."
+    }
+    ^^^ Do not change lines above ^^^
+---
+ sub-01/sub-01_task-movie_run-1_events.png | 2 +-
+ sub-01/sub-01_task-movie_run-1_events.tsv | 2 +-
+...
+</code></pre>
+</section>
+
+<section>
+  <h2>"Complete" provenance capture</h2>
+  <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
+<pre><code class="bash" style="max-height:none">$ datalad containers-run -n nilearn \
+  --input 'inputs/mri_aligned/sub-*/in_bold3Tp2/sub-*_task-avmovie_run-*_bold*' \
+  --output 'sub-*/LC_timeseries_run-*.csv' \
+  "bash -c 'for sub in sub-*; do for run in run-1 ... run-8;
+     do python3 code/extract_lc_timeseries.py \$sub \$run; done; done'"
+
+-- Git commit -- Michael Hanke &lt;michael.hanke@gmail.com&gt;; Fri Jul 6 11:02:28 2018
+    [DATALAD RUNCMD] singularity exec --bind {pwd} .datalad/e...
+    === Do not change lines below ===
+    {
+     "cmd": "singularity exec --bind {pwd} .datalad/environments/nilearn.simg bash..",
+     "dsid": "92ea1faa-632a-11e8-af29-a0369f7c647e",
+     "exit": 0,
+     "inputs": [
+      "inputs/mri_aligned/sub-*/in_bold3Tp2/sub-*_task-avmovie_run-*_bold*",
+      ".datalad/environments/nilearn.simg"
+     ],
+     "outputs": ["sub-*/LC_timeseries_run-*.csv"],
+     "pwd": "."
+    }
+    ^^^ Do not change lines above ^^^
+---
+ sub-01/LC_timeseries_run-1.csv | 1 +
+ sub-01/LC_timeseries_run-2.csv | 1 +
+...
+</code></pre>
+</section>
+</section>
+
+<section>
+<section>
+    <h2>(Automated) Metadata logistics</h2>
+    <ul>
+        <li>Whole datasets and individual files can have metadata</li>
+        <li>Metadata <strong>plurality:</strong> no need to decide on a single standard</li>
+        <li><strong>JSON-LD</strong> format (for true semantic graphs, or simple dumps)</li>
+        <li>Concept:
+            <ul>
+                <li>Metadata are <strong>automatically</strong> (and repeatedly) extracted from source data</li>
+                <li>Implementation of metadata extractors decides on content/structure</li>
+                <li>Dataset authors/curators decide on extractor selection</li>
+                <li>Metadata are managed by DataLad (optionally annexed), and can be separated from
+                    a dataset and aggregated into super-datasets</li>
+                <li>(Super)datasets can be <strong>queried</strong> for all available metadata of any content,
+                    <strong>regardless of that content being locally available or not</strong></li>
+            </ul>
+        </li>
+        <li>DataLad can serve as a transport layer for metadata</li>
+    </ul>
+    <note><a href="http://docs.datalad.org/en/latest/metadata.html#internal-metadata-representation">http://docs.datalad.org/en/latest/metadata.html#internal-metadata-representation</a></note>
+</section>
+
+<section>
+<h2>Example JSON-LD metadata structure</h2>
+<pre><code class="json" style="max-height:none">{
+  "@context": {
+    "@version": 1.1,
+    "schema": "http://schema.org/",
+    "name": "schema:name",
+    "records": {
+      "@id": "@graph",
+      "@container": "@type"
+    },
+    "nidm": "http://nidm#",
+    "niiri": "http://niiri#",
+    "prov": "http://prov#",
+    "atLocation": "http://prov#atLocation",
+    "designMatrix": "nidm:designMatrix",
+    "data": "nidm:designMatrix",
+    "regressorNames": "nidm:regressorNames"
+  },
+
+
+  "name": "My NIDM graph",
+  "records": {
+    "designMatrix": {
+      "@id": "niiri:0001",
+      "name": "Some design matrix",
+      "atLocation": "DesignMatrix.csv",
+      "regressorNames": "[motor_left, motor_right]"
+    },
+    "data": {
+      "@id": "niiri:0002",
+      "name": "Some Data"
+    }
+  }
+}
+</code></pre>
+<p><small>a true graph with defined terms, but processable without a graph representation</small></p>
+</section>
+
+<section>
+    <h2>Metadata-based search for individual files</h2>
+    <p style="margin-top:-1em">across datasets, without a DB (server)</p>
+    <pre style="margin-top:-.5em"><code class="bash" style="max-height:none">$ datalad \
+  -c datalad.search.index-egrep-documenttype=files \
+  -f json_pp \
+  search \
+    bids.subject.sex:female \
+    bids.type:t1 \
+    bids.subject.age:24
+{
+  "dsid": "4842e188-7df5-11e6-8e6b-002590f97d84",
+  "metadata": {
+    "@context": {...},
+    "bids": {...},
+    "datalad_core": {
+      "url": [
+        "http://openneuro.s3.amazonaws.com/ds000008/ds000008_R1.1.0/...MZ92g",
+        "http://openneuro.s3.amazonaws.com/ds000008/ds000008_R1.1.1/...UyanK",
+        "http://openneuro.s3.amazonaws.com/ds000008/ds000008_R2.0.0/..._flBz"
+      ]
+    },
+    "nifti1": {...},
+  "parentds": "/tmp/mega/openfmri/ds000008",
+  "path": "/tmp/mega/openfmri/ds000008/sub-15/anat/sub-15_T1w.nii.gz",
+  "query_matched": {
+    "bids.subject.age(years)": "24",
+    "bids.subject.sex": "female",
+    "bids.type": "T1"
+  },
+  "refcommit": "b18692ef1beefd88055bc0578b7567a8f4fdf8f9",
+  "type": "file"
+}
+...
+    </code></pre>
+    <p style="margin-top:-.5em">alternative output formats: JSON stream, custom, ...</p>
+</section>
+
+<section>
+    <h2>Publish</h2>
+
+    <ul>
+        <li>Wide variety of supported storage solutions (SSH-servers, GIN, DropBox, Box.com, Google,
+            WEBDAV, bittorrent, IPFS, ...) via Git-annex</li>
+        <li>Full support for data encryption</li>
+        <li>Multiple redundant synchronized publication targets are supported ("publish 2TB on GitHub")</li>
+        <li>Per-target configuration of accepted content, with dedicated set of permissions and authorization mechanisms</li>
+        <li>Export of dataset to FigShare and similar storage solutions</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Extend DataLad</h2>
+
+    <ul>
+        <li>Separate Python packages, anybody can develop their own</li>
+        <li>Support for tailored solutions with narrower scope or specific audiences
+            extensions</li>
+        <li>Extensions can provides additional commands, procedures, metadata extractors,
+            webapps</li>
+        <li>Available extensions
+            <ul>
+                <li><strong>crawler</strong>: track web resources in automated data distributions</li>
+                <li><strong>neuroimaging</strong>: neuroimaging research data and workflow</li>
+                <li><strong>containers</strong>: support for containerized computational environments</li>
+                <li><strong>webapp</strong>: REST API for querying/manipulating datasets</li>
+                <li><strong>hirni</strong>: imaging raw data management/entry</li>
+            </ul>
+        </li>
+
+    </ul>
+    <note><a href="http://docs.datalad.org/en/latest/customization.html#extension-packages">http://docs.datalad.org/en/latest/customization.html#extension-packages</a></note>
+</section>
+
+
+</section>
+
+<section>
+  <h2>Summary</h2>
+  <img style="" data-src="pics/datalad_yoda.png">
+  <aside class="notes">
+big picture slide, decentralized everything
+
+no central service, no central storage
+
+but capable of using any central service/storage
+
+encyption, authorization
+</aside>
+</section>
+
+
+<section>
+    <h2>What FAIR issues does DataLad not solve?</h2>
+        <dl style="text-align:left;width:100%;margin-top:3em">
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">I2</dt><dd>(Meta)data use vocabularies that follow FAIR principles</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">I3</dt><dd>(Meta)data include qualified references to other (meta)data</dd>
+        </dl>
+    <hr />
+        <dl style="text-align:left;width:100%">
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">R1.1</dt><dd>(Meta)data are released with a clear and accessible data usage license</dd>
+            <dt style="margin-right:0.5em;clear:left;display:inline-block;float:left">R1.3</dt><dd>(Meta)data meet domain-relevant community standards</dd>
+        </dl>
+    </dl>
+
+    <p style="margin-top:3em"><strong>This is up to "you"!</strong></p>
+  <note><a href="https://www.go-fair.org/fair-principles">https://www.go-fair.org/fair-principles</a></note>
+</section>
+
+
+<section>
+  <h2>Acknowledgements</h2>
+  <table>
+  <tr style="vertical-align:middle">
+      <td style="vertical-align:middle">
+  <ul>
+      <li>Yaroslav Halchenko</li>
+      <li>Joey Hess (git-annex)</li>
+      <li>Benjamin Poldrack</li>
+      <li>Kyle Meyer</li>
+      <li>20+ additional contributors</li>
+  </ul>
+      </td>
+      <td style="vertical-align:middle">
+  <img style="height:150px;margin-right:50px" data-src="pics/nsf.png" />
+  <img style="height:150px;margin-right:50pxi;margin-left:50px" data-src="pics/binc.png" />
+  <img style="height:150px;margin-left:50px" data-src="pics/bmbf.png" />
+  </span>
+  <br />
+  <img style="height:80px;margin:20px" data-src="pics/erdf.png" />
+  <img style="height:80px;margin:20px" data-src="pics/LSA-Logo.png" />
+      </td>
+  </tr>
+  </table>
+  <p>Website: <a href="http://datalad.org">http://datalad.org</a><br />
+  Development: <a href="http://github.com/datalad">http://github.com/datalad</a><br />
+  Talk: <a href="https://matrix.to/#/#datalad:matrix.org">https://matrix.to/#/#datalad:matrix.org</a><br />
+  Open data: <a href="http://datasets.datalad.org">http://datasets.datalad.org</a></p>
+</section>
+
+
+</div> <!-- /.slides -->
+</div> <!-- /.reveal -->
+
+<script src="reveal.js/lib/js/head.min.js"></script>
+<script src="reveal.js/js/reveal.js"></script>
+
+<script>
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    // The "normal" size of the presentation, aspect ratio will be preserved
+    // when the presentation is scaled to fit different resolutions. Can be
+    // specified using percentage units.
+    width: 1280,
+    height: 960,
+
+    // Factor of the display size that should remain empty around the content
+    margin: 0.1,
+
+    // Bounds for smallest/largest possible scale to apply to content
+    minScale: 0.2,
+    maxScale: 1.0,
+
+    controls: false,
+    progress: true,
+    history: true,
+    center: false,
+
+    transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+    // Optional reveal.js plugins
+    dependencies: [
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true }
+    ]
+  });
+</script>
+</body>
+</html>
