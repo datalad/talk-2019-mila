@@ -15,7 +15,7 @@ https://creativecommons.org/licenses/by-sa/4.0/
 
 ## Acknowledgements
 
-The work presented in thsi talk was supported by a US-German collaboration in
+The work presented in this talk was supported by a US-German collaboration in
 computational neuroscience (CRCNS) project "DataGit: converging catalogues,
 warehouses, and deployment logistics into a federated 'data distribution'"
 (Halchenko/Hanke), co-funded by the US National Science Foundation (NSF
