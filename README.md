@@ -1,12 +1,12 @@
-# Go FAIR with DataLad
+# DataLad
 
 Talk on DataLad's data management capabilities, how it aids open science
 efforts and helps achieve improved reproducibility in a FAIR way.
+Heavily based on the Bernstein Go Fair talk by Michael Hanke.
+Presented at the OpenNeuro kick-off meeting, Stanford, 2018 by
+Yaroslav O. Halchenko.
 
-Presented at the Bernstein Conference workshop *Practical approaches to
-research data management and reproducibility* in Berlin, 2018.
-
-To see the slides go to: https://rawgit.com/psychoinformatics-de/talk-datalad-gofair/master/index.html
+URLs in the slides ATM are tuned for offline presentation.
 
 ## License
 
