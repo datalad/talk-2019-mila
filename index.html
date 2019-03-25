@@ -5,7 +5,7 @@
 
   <title>DataLad</title>
 
-  <meta name="description" content="Talk on DataLad">
+  <meta name="description" content="DataLad Talk given at MILA, Montreal, 2019">
   <meta name="author" content="Michael Hanke and Yaroslav Halchenko">
 
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="s.css" id="theme">
   <!-- Code syntax highlighting -->
   <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
-  <!-- Printing and PDF exports -->
+  <!-- Printing and PDF exports -- disabled for now
   <script>
     var link = document.createElement( 'link' );
     link.rel = 'stylesheet';
@@ -24,6 +24,7 @@
     link.href = window.location.search.match( /print-pdf/gi ) ? reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
     document.getElementsByTagName( 'head' )[0].appendChild( link );
   </script>
+ -->
   <link rel="stylesheet" href="s.css" id="theme">
   <!--[if lt IE 9]>
   <script src="lib/js/html5shiv.js"></script>
@@ -98,7 +99,7 @@
 	<li style="margin-top:1em">Software distributions are inadequate for data
 	  <ul style="font-size:90%">
 		<li>modularity is less well defined <br>
-		  (interest could be in specific subjects, modality, sessions)</li>
+		  (interest could be in specific group of files, videos-vs-images or humans-vs-objects, etc)</li>
 		<li>data is less volatile (lesser versions, only a few files change)</li>
 		<li>tarballs are inefficient</li>
 		<li>we cannot host copies of all data</li>
@@ -107,12 +108,26 @@
   </ul>
 </section>
 
+<!-- cheat sheet
+<section>
+	<p class="fragment grow">grow</p>
+	<p class="fragment shrink">shrink</p>
+	<p class="fragment fade-out">fade-out</p>
+	<p class="fragment fade-up">fade-up (also down, left and right!)</p>
+	<p class="fragment fade-in-then-out">fades in, then out when we move to the next step</p>
+	<p class="fragment fade-in-then-semi-out">fades in, then obfuscate when we move to the next step</p>
+	<p class="fragment highlight-current-blue">blue only once</p>
+	<p class="fragment highlight-red">highlight-red</p>
+	<p class="fragment highlight-green">highlight-green</p>
+	<p class="fragment highlight-blue">highlight-blue</p>
+</section>
+-->
 
 <section>
-  <h2>(Further) motivations for DataLad</h2>
+  <h2>(Further) motivation for DataLad is Git</h2>
   <ul style="font-size:120%">
-	<li style="margin-top:1em">Distributed version control systems (DVCS)
-	  are a blessing for
+	<p>
+	<li style="margin-top:1em">Git is a blessing for
 	  <ul style="font-size:90%">
 		<li>collaboration</li>
 		<li>experimentation</li>
@@ -120,16 +135,57 @@
 		<li>provenance tracking</li>
 	  </ul>
 	<li style="margin-top:1em">We (and many others got to) love Git</li>
-	<li style="margin-top:1em">Git is great for code and inadequate
-	for data
+  </ul>
+</section>
+
+<section>
+  <h2>What is Git?</h2>
+</section>
+
+<section data-transition="fade-in">
+  <h2>Git is ...</h2>
+
+<p class="fragment fade-in-then-out">a Version Control System!</p>
+<pre class="fragment fade-in-then-out"><code class="bash" style="max-height:none">$ man git
+
+GIT(1)                            Git Manual                            GIT(1)
+
+NAME
+       git - the stupid content tracker
+
+SYNOPSIS
+       ...
+
+DESCRIPTION
+       Git is a fast, scalable, distributed revision control system with an
+       unusually rich command set that provides both high-level operations and
+       full access to internals.
+</code></pre>
+  <p class="fragment fade-in" style="font-size:120%">a Distributed Revision Control System
+	<br/>AKA "the stupid content tracker"</p>
+
+</section>
+
+<section>
+  <h2>Git ...</h2>
+  <ul style="font-size:120%">
+	<li>tracks content (files, file trees, commits)</li>
+	<li>stores all known content in object store (<emph class="path">.git/objects</emph>)</li>
+	<li>efficiently exchanges objects and references
+	  <br/>(branches, tags) with remote instances</li>
+	<li style="margin-top:1em">is <strong>great</strong> for code</li>
+	<li>is inadequate for data</li>
 	  <ul style="font-size:90%">
 		<li><strong>all objects</strong> are distributed across all
 		copies</li>
-		<li>duplication between work tree and object store (.git/objects)</li>
+		<li>duplicate content between work tree and object store</li>
 	  </ul>
   </ul>
 </section>
+
 </section>
+
+
 
 <section data-transition="fade">
 <section>
@@ -183,30 +239,49 @@
   <section data-transition="fade">
     <h2>Install an existing dataset</h2>
     <img data-src="pics/dl_download_ds02.png">
-    <p style="margin-top:-2em">request via standard URL,<br />but dataset ID resolver is possible</p>
-    <pre class="codefootnote"><code class="bash">$ datalad install https://github.com/OpenNeuroDatasets/ds001547</code></pre>
+    <p style="margin-top:-4em">request via standard URL</p>
+    <pre class="codefootnote"><code class="bash">$ datalad install http://datasets.datalad.org/cifar</code></pre>
+    <p style="margin-top:-0em">or a shortcut</p>
+    <pre class="codefootnote"><code class="bash">$ datalad install ///cifar</code></pre>
 
 	<ul>
     <li><emph>install</emph> (if used without -g) is <strong>fast</strong></li>
 	<li>Dataset file hierarchy is available right away for exploration</li>
-	<li>Some (small) metadata and documentation files are available</li>
+	<li>Some (small) metadata and documentation files can be made available directly from Git</li>
 	</ul>
   </section>
 
   
   <section data-transition="fade">
-    <h2>Obtain dataset content</h2>
+    <h2>Obtain content</h2>
     <img data-src="pics/dl_download_ds05.png">
-    <p style="margin-top:-2em">request via user-friendly local file path, not internal ID,<br />regardless of remote actual storage solution properties</p>
-    <pre class="codefootnote"><code class="bash">ds001547/ $ datalad get sub-*/anat</code></pre>
-    <aside class="notes">obtain individual files or groups thereof or all of them, but it is all about FILES!</aside>
+    <p style="margin-top:-2em">by requesting via a user-friendly local file path,
+	  <br/>not an internal ID or some remote URL,<br />regardless of remote actual storage solution properties</p>
+    <pre class="codefootnote"><code class="bash">cifar/ $ datalad get cifar-10-batches-py/data*</code></pre>
+    <p class="notes">obtain individual files or groups thereof or all of them, <br/> but it is all about <strong>FILES</strong>!</p>
   </section>
 
   <section data-transition="fade">
-    <h2>Tracking "remote" data evolution</h2>
+    <h2>Drop content</h2>
+    <!-- TODO <img data-src="pics/dl_download_ds05.png"> -->
+    <p style="margin-top:2em" style="font-size:120%">which is no longer needed</p>
+    <pre class="codefootnote"><code class="bash">cifar/ $ datalad drop cifar-10-batches-py/data1*</code></pre>
+    <p style="margin-top:2em" style="font-size:120%">but rest assured that you would not loose a file, <br/>content for which is not available from elsewhere</p>
+	<pre><code class="bash">mynewproj/ $ datalad drop a-new-unique-file
+drop(error): /tmp/myproj/a-new-unique-file (file) [unsafe; Could only verify
+the existence of 0 out of 1 necessary copies; Rather than dropping this file,
+try using: git annex move; (Use --force to override this check, or adjust
+numcopies.)]</code></pre>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Track "remote" data evolution</h2>
     <img data-src="pics/dl_download_ds08.png">
-    <p style="margin-top:-2em">ability to track any number of dataset "siblings",<br /> in Git or non-Git data stores</p>
-    <pre class="codefootnote"><code class="bash">ds001547/ $ datalad update</code></pre>
+    <p style="margin-top:-2em">from any number of dataset "siblings",
+	  <br /> in Git (git remotes) or non-Git (git-annex special remotes)
+	  <br /> data stores
+	</p>
+    <pre class="codefootnote"><code class="bash">cifar/ $ datalad update</code></pre>
 	<ul>
 	  <li>update data availability information</li>
 	</ul>
@@ -215,8 +290,8 @@
   <section data-transition="fade">
     <h2>Keep up-to-date</h2>
     <img data-src="pics/dl_download_ds11.png">
-    <p style="margin-top:-2em">apply changes from default or selected sibling<br />while maintaining local data availability status</p>
-    <pre class="codefootnote"><code class="bash">ds001547/ $ datalad update --merge --reobtain-data</code></pre>
+    <p style="margin-top:-2em">by applying changes from default or selected sibling<br />while maintaining local data availability status</p>
+    <pre class="codefootnote"><code class="bash">cifar/ $ datalad update --merge --reobtain-data</code></pre>
 	<ul>
 	  <li>update the state to the most recent version</li>
 	  <li>update data to new versions</li>
@@ -224,12 +299,115 @@
   </section>
 </section>
 
+<!-- Creating an populating -->
+
+<section>
+  <section data-transition="fade">
+    <h2>Create a new dataset from scratch</h2>
+    <p style="margin-top:4em">One simple command</p>
+    <pre class="codefootnote"><code class="bash">$ datalad create myproj</code></pre>
+    <p style="margin-top:-0em">instead of</p>
+	<pre class="codefootnote"><code class="bash">$ mkdir myproj && cd myproj && git init && git annex init</code></pre>
+	<p>with available options such as</p>
+	<ul>
+	  <li><emph>--text-no-annex</emph> to instruct annex to commit text files (code)
+		<br/> directly to git</li>
+	  <li><emph>--no-annex</emph> to not initiate git-annex and keep it pure git</li>
+	</ul>
+  </section>
+
+  <section data-transition="fade">
+    <h2>Populate with your content</h2>
+    <p style="margin-top:0em"><strong>Any</strong>, regardless how large, file can be added to dataset</p>
+	<pre><code class="bash" style="max-height:none">myproj/ $ cp ~/data-I-do-not-want-to-loose/big.dat .
+
+myproj/ $ datalad add -m "Added my favorite big file" big.dat
+add(ok): myproj/big.dat (file)
+save(ok): myproj (dataset)
+action summary:
+  add (ok: 1)
+  save (ok: 1)
+
+myproj/ $ git show
+commit f12facca4f0dde30c69702ac84edc8deebb5a467 (HEAD -> master)
+Author: Yaroslav Halchenko &lt;debian@onerussian.com&gt;
+Date:   Fri Mar 22 13:51:37 2019 -0400
+
+    Added my favorite big file
+
+diff --git a/big.dat b/big.dat
+new file mode 120000
+index 0000000..54d7bcd
+--- /dev/null
++++ b/big.dat
+@@ -0,0 +1 @@
++.git/annex/objects/P0/vx/MD5E-s18681--b1d886e662133db668c4bf2ed1b6dfab.dat/MD5E-s18681--b1d886e662133db668c4bf2ed1b6dfab.dat
+	</code></pre>
+  </section>
+
+    <section data-transition="fade">
+      <h2>Populate with content from the web</h2>
+    <p style="margin-top:2em" style="font-size:120%"><emph class="command">git-annex addurl</emph> makes it easy to add any file pointed by a URL</p>
+	<pre><code class="bash" style="max-height:none">myfirstcifar/ $ git annex addurl --pathdepth=-1 \
+		https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz
+addurl https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz 
+(to cifar_10_python.tar.gz) ok
+(recording state in git...)
+
+myfirstcifar/ $ ls -lL cifar_10_python.tar.gz
+-r-------- 1 yoh yoh 170498071 Mar 22 14:02 cifar_10_python.tar.gz</code></pre>
+
+	  <p style="font-size:120%">and keeps track of where from
+		<br />(which repository, data store, or a URL)
+		<br />each file's content is available from</p>
+	  <pre><code class="bash" style="max-height:none">myfirstcifar/ $ git annex whereis cifar_10_python.tar.gz 
+whereis cifar_10_python.tar.gz (2 copies) 
+  	00000000-0000-0000-0000-000000000001 -- web
+   	46fe3ab9-139f-465a-a257-7b22e56d2fb8 -- yoh@hopa:/tmp/myfirstcifar [here]
+
+  web: https://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz
+ok	  </code></pre>
+  </section>
+
+
+  <section data-transition="fade">
+    <h2>Crawl the web for content</h2>
+    <!-- TODO <img data-src="pics/dl_download_ds02.png"> -->
+    <p style="margin-top:0em"><a href="https://github.com/datalad/datalad-crawler">datalad-crawler</a> extension makes it possible to scrape
+	  <br />websites, AWS S3, custom portals etc. to populate datasets with content</p>
+	<pre><code class="bash" style="max-height:none">cifar/ $ datalad crawl-init --save --template=simple_with_archives \
+		'url=https://www.cs.toronto.edu/~kriz/cifar.html'  \
+		'a_href_match_=.*cs.toronto.edu/.*cifar-.*'        \
+		'archives_re=\.gz$'                                \
+		'leading_dirs_depth=0'
+
+cifar/ $ datalad crawl
+[INFO   ] Total stats: URLs processed: 6, downloaded: 6, size: 1.0 GB,
+          Files processed: 48, +annex: 42,
+		  Branches merged: incoming->incoming-processed,  Datasets crawled: 1</code></pre>
+	<p>so that data becomes readily available for use
+	  <br/>(e.g., extracted from archives)</p>
+	<pre><code class="bash" style="max-height:none">cifar/ $ ls
+cifar-10-batches-bin/  cifar-10-batches-mat/  cifar-10-batches-py/
+cifar-100-binary/      cifar-100-matlab/      cifar-100-python/
+
+cifar/ $ /bin/ls cifar-10-batches-py
+batches.meta  data_batch_1  data_batch_2  data_batch_3 ...
+</pre></code>
+	<ul>
+	  <li>this git repository can be shared as any other git repository</li>
+	  <li>data will be available from original location</li>
+	  <li>subsequent <emph>datalad crawl</emph> would update dataset web content changes</li>
+	</ul>
+  </section>
+  
+</section>
 
 <section>
 <section>
   <h2>Dataset linkage</h2>
 <img data-src="pics/dataset_linkage.png">
-<pre><code class="diff" style="max-height:none">$ datalad install --dataset . --source http://example.com/importantds inputs/rawdata
+<pre><code class="diff" style="max-height:none">$ datalad install --dataset . --source ///cifar data/rawdata
 
 $ git diff HEAD~1
 diff --git a/.gitmodules b/.gitmodules
@@ -238,16 +416,16 @@ index 0000000..c3370ba
 --- /dev/null
 +++ b/.gitmodules
 @@ -0,0 +1,3 @@
-+[submodule "inputs/rawdata"]
-+       path = inputs/rawdata
-+       url = http://example.com/importantds
-diff --git a/inputs/rawdata b/inputs/rawdata
++[submodule "data/rawdata"]
++       path = data/rawdata
++       url = http://datasets.datalad.org/cifar/.git
+diff --git a/data/rawdata b/data/rawdata
 new file mode 160000
 index 0000000..fabf852
 --- /dev/null
 +++ b/inputs/rawdata
 @@ -0,0 +1 @@
-+Subproject commit fabf8521130a13986bd6493cb33a70e580ce8572
++Subproject commit 0000f59a5e68cf035931e78ed61b6327fbc3bdba
 </code></pre>
 </section>
 
@@ -261,67 +439,239 @@ index 0000000..fabf852
 </section>
 
 <section>
-<section>
+<section data-transition="default fade-out">
   <h2>Data provenance capture</h2>
   <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
-<pre><code class="bash" style="max-height:none">$ datalad run -m "Perform eye movement event detection"\
-  --input 'inputs/raw_eyegaze/sub-*/beh/sub-*...tsv.gz' \
-  --output 'sub-*' \
-  bash code/compute_all.sh
+  <pre><code class="bash" style="max-height:none">cifar/ $ datalad run -m "My first preprocessing" \
+	  --input data/rawdata/cifar-10-batches-py \
+	  python ./code/preprocessing.py data/rawdata data/preproc1 100
+[INFO   ] Making sure inputs are available (this may take some time) 
+[INFO   ] == Command start (output follows) ===== 
+Creating training dataset: batch 500/500
+Creating test dataset: batch 100/100
+[INFO   ] == Command exit (modification check follows) ===== 
+add(ok): data/preproc1/test-100.h5 (file)
+add(ok): data/preproc1/train-100.h5 (file)
+save(ok): .../cifar (dataset)
+action summary:
+  add (ok: 2)
+  get (notneeded: 2)
+  save (ok: 1)
 
--- Git commit -- Michael Hanke &lt;michael.hanke@gmail.com&gt;; Fri Sep 21 22:00:47 2018
-    [DATALAD RUNCMD] Perform eye movement event detection
-    === Do not change lines below ===
-    {
-     "cmd": "bash code/compute_all.sh",
-     "dsid": "d2b4b72a-7c13-11e7-9f1f-a0369f7c647e",
-     "exit": 0,
-     "inputs": ["inputs/raw_eyegaze/sub-*/beh/sub-*_task-movie_run-*_....tsv.gz"],
-     "outputs": ["sub-*"],
-     "pwd": "."
-    }
-    ^^^ Do not change lines above ^^^
----
- sub-01/sub-01_task-movie_run-1_events.png | 2 +-
- sub-01/sub-01_task-movie_run-1_events.tsv | 2 +-
-...
+cifar/ $ git tag run-preproc1
+
 </code></pre>
 </section>
 
-<section>
-  <h2>"Complete" provenance capture</h2>
+<section data-transition="none">
+  <h2>Data provenance capture</h2>
   <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
-<pre><code class="bash" style="max-height:none">$ datalad containers-run -n nilearn \
-  --input 'inputs/mri_aligned/sub-*/in_bold3Tp2/sub-*_task-avmovie_run-*_bold*' \
-  --output 'sub-*/LC_timeseries_run-*.csv' \
-  "bash -c 'for sub in sub-*; do for run in run-1 ... run-8;
-     do python3 code/extract_lc_timeseries.py \$sub \$run; done; done'"
+  <pre><code class="bash" style="max-height:none">cifar/ $> git show --stat
+commit 35e166c9b86dfc2640f4638aba890e6b656da02d (HEAD -> master)
+Author: Yaroslav Halchenko &lt;debian@onerussian.com&gt;
 
--- Git commit -- Michael Hanke &lt;michael.hanke@gmail.com&gt;; Fri Jul 6 11:02:28 2018
-    [DATALAD RUNCMD] singularity exec --bind {pwd} .datalad/e...
+    [DATALAD RUNCMD] My first preprocessing
+    
     === Do not change lines below ===
     {
-     "cmd": "singularity exec --bind {pwd} .datalad/environments/nilearn.simg bash..",
-     "dsid": "92ea1faa-632a-11e8-af29-a0369f7c647e",
+     "chain": [],
+     "cmd": "python ./code/preprocessing.py data/rawdata '{outputs}' 100",
+     "dsid": "c2360714-4a98-11e9-a47c-8019340ce7f2",
      "exit": 0,
+     "extra_inputs": [],
      "inputs": [
-      "inputs/mri_aligned/sub-*/in_bold3Tp2/sub-*_task-avmovie_run-*_bold*",
-      ".datalad/environments/nilearn.simg"
+      "data/rawdata/cifar-10-batches-py"
      ],
-     "outputs": ["sub-*/LC_timeseries_run-*.csv"],
+     "outputs": [
+      "data/preproc1"
+     ],
      "pwd": "."
     }
     ^^^ Do not change lines above ^^^
----
- sub-01/LC_timeseries_run-1.csv | 1 +
- sub-01/LC_timeseries_run-2.csv | 1 +
-...
+
+ data/preproc1/test-100.h5  | 1 +
+ data/preproc1/train-100.h5 | 1 +
+ 2 files changed, 2 insertions(+)
 </code></pre>
 </section>
 </section>
 
 <section>
+  <section>
+    <h2>Publish</h2>
+
+    <ul>
+        <li>Wide variety of supported storage solutions (SSH-servers, GIN, DropBox, Box.com, Google,
+          WEBDAV, bittorrent, IPFS, ...) via Git-annex</li>
+		<li><a href="http://datasets.datalad.org">datasets.datalad.org</a>
+		is just a sample of a "datalad publish"-ed dataset</a>
+        <li>Full support for data encryption</li>
+        <li>Multiple redundant synchronized publication targets are supported ("publish 2TB on GitHub")</li>
+        <li>Per-target configuration of accepted content, with dedicated set of permissions and authorization mechanisms</li>
+        <li>Export of dataset to FigShare and similar storage solutions</li>
+    </ul>
+  </section>
+
+  <section>
+	<h2>Publish to GitHub (to share code)</h2>
+	<p>We all know how to do it!
+	  <br/>But with DataLad no need to leave terminal</p>
+	<pre><code class="bash" style="max-height:none">cifar/ $ datalad create-sibling-github --github-login yarikoptic demo-cifar-preproc
+.: github(-) [https://yarikoptic@github.com/yarikoptic/demo-cifar-preproc.git (git)]
+'https://yarikoptic@github.com/yarikoptic/demo-cifar-preproc.git' configured as sibling
+'github' for &lt;Dataset path=.../cifar&gt;</code></pre>
+
+<pre><code class="bash" style="max-height:none">cifar/ $ datalad publish --to=github
+[INFO   ] Publishing &lt;Dataset path=.../cifar&gt; to github 
+Password for 'https://yarikoptic@github.com': 
+publish(ok): . (dataset) [pushed to github: ['[new branch]', '[new branch]']]</code></pre>
+
+   <ul>
+	 <li>Anyone can now obtain not only my code but also the exact
+	   version of the CIFAR dataset (if they want)</li>
+	 <li>Information about data availability (git-annex branch) is published too</li>
+	 <li>It is possible full hierarchies of datasets.
+	   <br/>See <a href="http://datasets.datalad.org">http://datasets.datalad.org</a> with &gt; 60 TB of data, &gt; 400 datasets in a hierarchy
+	 </li>
+   </ul>
+  </section>
+
+  <section>
+  <h2>Publish to FigShare (to share preprocessed data)</h2>
+  <!-- IMG TODO -->
+  <p>FigShare provides public publishing of datasets (no updates, like an "article")</p>
+  <pre><code class="bash" style="max-height:none">cifar/ $ datalad export-to-figshare
+[INFO   ] Uploading .../cifar/datalad_c2360714-4a98-11e9-a47c-8019340ce7f2.zip to figshare 
+Article
+Would you like to create a new article to upload to?
+If not - we will list existing articles (choices: yes, no): yes
+[INFO   ] Created a new (private) article 7886252 at https://figshare.com/account/articles/7886252. Please visit it, enter additional meta-data and make public
+export_to_figshare(ok): &lt;Dataset path=.../cifar&gt;
+   [Published archive https://ndownloader.figshare.com/files/14680097]
+[INFO   ] Finished adding ...cifar/datalad_c2360714-4a98-11e9-a47c-8019340ce7f2.zip:
+   Files processed: 10, removed: 10, +git: 7, +annex: 3
+
+cifar/ $> datalad publish --to=github
+[INFO   ] Publishing &lt;Dataset path=.../cifar&gt; to github 
+publish(ok): . (dataset) [pushed to github: ['[up to date]', '47e2519..be2279b']]
+  </code></pre>
+  <ul>
+	<li>Data now is available from a .zip on FigShare</li>
+	<li>Anyone can now install the dataset from GitHub
+	  <br/>and obtain raw or preprocessed data</li>
+  </ul>
+  </section>
+</section>
+
 <section>
+  <section>
+	<h2>Run anywhere: prepare a containerized environment</h2>
+	<p>Not everyone has an environment I have!</p>
+	<p>Prepare a Singularity container recipe for the environment:</p>
+	<pre><code class="bash" style="max-height:none">cifar/environments $> datalad run -m "Creating Singularity file for preprocessing container" \
+	bash -c 'docker run --rm kaczmarj/neurodocker:0.4.3 generate \
+	singularity \
+	--base neurodebian:stretch \
+	-p apt \
+	--miniconda pip_install="torch torchvision xarray netCDF4" \
+	| sed -e "s, \(/var\)\?/tmp/\*,,g" \
+	>| Singularity.preproc'
+[INFO   ] == Command exit (modification check follows) =====
+add(ok): environments/Singularity (file) [non-large file; adding content to git repository]
+save(ok): .../cifar (dataset)
+action summary:
+add (ok: 1)
+save (ok: 1)
+
+$> datalad publish --to=github
+[INFO   ] Publishing &lt;Dataset path=.../cifar&gt; to github
+publish(ok): . (dataset) [pushed to github: ['19aa3a..47e251', '[up to date]']]</code></pre>
+	<ul>
+	  <li>Enabled GitHub repo on <a href="https://www.singularity-hub.org">https://www.singularity-hub.org</a></li>
+	  <li>In a few minutes my Singularity container was created in the cloud</li>
+	</ul>
+
+  </section>
+
+  <section>
+	<h2>Run anywhere: add a containerized environment</h2>
+	<img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
+	<p>Container image now could be added to the dataset</p>
+	<pre><code class="bash" style="max-height:none">cifar/ $ datalad containers-add -i environments/preproc.simg \
+	-u shub://yarikoptic/demo-cifar-preproc:preproc preproc
+save(ok): .../cifar (dataset)
+containers_add(ok): .../environments/preproc.simg (file)
+action summary:
+containers_add (ok: 1)
+save (ok: 1)
+
+cifar/ $ cat .datalad/config
+...
+[datalad "containers.preproc"]
+updateurl = shub://yarikoptic/demo-cifar-preproc:preproc
+image = environments/preproc.simg
+cmdexec = singularity exec {img} {cmd}
+	</code></pre>
+	<ul>
+	  <li>Singularity container is just a file, now annexed and available from the cloud</li>
+	</ul>
+  </section>
+
+  <section data-background="pics/dataset_linkage_provenance.png">
+	<h2>"Complete" provenance capture</h2>
+	<p>We are ready to do the run in a container and publish update</p>
+	<pre><code class="bash" style="max-height:none">cifar/ $ datalad containers-run -m "My reproducible preprocessing" -n preproc \
+  --input data/rawdata/cifar-10-batches-py \
+  python ./code/preprocessing.py data/rawdata data/preproc2 100
+[INFO   ] Making sure inputs are available (this may take some time)
+[INFO   ] == Command start (output follows) =====
+Creating training dataset: batch 500/500
+Creating test dataset: batch 100/100
+[INFO   ] == Command exit (modification check follows) =====
+add(ok): data/preproc2/test-100.h5 (file)
+add(ok): data/preproc2/train-100.h5 (file)
+save(ok): .../cifar (dataset)
+action summary:
+  add (ok: 2)
+  get (notneeded: 3)
+  save (ok: 1)
+
+cifar/ $ git tag run-preproc2
+
+cifar/ $ datalad publish --to=github
+[INFO   ] Publishing &lt;Dataset path=.../cifar&gt; to github 
+publish(ok): . (dataset) [pushed to github: ['d4afb4e..ee18230', 'be2279b..8e48fab']]
+
+$ git push github run-preproc1 run-preproc2
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/yarikoptic/demo-cifar-preproc.git
+ * [new tag]   run-preproc1 -> run-preproc1
+ * [new tag]   run-preproc2 -> run-preproc2</code></pre>
+  </section>
+
+  <section>
+	<h2>Apparently environment matters!?</h2>
+
+	<pre><code class="bash" style="max-height:none">cifar/ $ h5diff -c data/preproc{1,2}/train-100.h5
+attribute: &lt;_NCProperties of &lt;/&gt;&gt; and &lt;_NCProperties of &lt;/&gt;&gt;
+20 differences found
+Not comparable: &lt;/dim_0&gt; or &lt;/dim_0&gt; is an empty dataset
+Not comparable: &lt;/dim_1&gt; or &lt;/dim_1&gt; is an empty dataset
+Not comparable: &lt;/dim_2&gt; or &lt;/dim_2&gt; is an empty dataset
+Not comparable: &lt;/dim_3&gt; or &lt;/dim_3&gt; is an empty dataset
+Not comparable: &lt;/dim_4&gt; or &lt;/dim_4&gt; is an empty dataset</code></pre>
+  <p>Homework:</p>
+  <ul>
+	<li>Install datalad, datalad-containers, and singularity</li>
+	<li><pre><code>datalad install -r https://github.com/yarikoptic/demo-cifar-preproc</code></pre></li>
+	<li><pre><code>datalad rerun run-preproc2</code></pre> should reproduce data/preproc2 (no new commit)</li>
+	<li><pre><code>datalad rerun run-preproc1</code></pre> might reproduces data/preproc1 (new commit?)</li>
+  </ul>
+  </section>
+</section>
+
+<section>
+  <section>
     <h2>(Automated) Metadata logistics</h2>
     <ul>
         <li>Whole datasets and individual files can have metadata</li>
@@ -329,9 +679,11 @@ index 0000000..fabf852
         <li><strong>JSON-LD</strong> format (for true semantic graphs, or simple dumps)</li>
         <li>Concept:
             <ul>
-                <li>Metadata are <strong>automatically</strong> (and repeatedly) extracted from source data</li>
-                <li>Implementation of metadata extractors decides on content/structure</li>
+                <li>Metadata are <strong>automatically</strong> (and repeatedly) extracted from source content (EXIF from images, XMP from .pdf, ...)</li>
+                <!--
+				<li>Implementation of metadata extractors decides on content/structure</li>
                 <li>Dataset authors/curators decide on extractor selection</li>
+				-->
                 <li>Metadata are managed by DataLad (optionally annexed), and can be separated from
                     a dataset and aggregated into super-datasets</li>
                 <li>(Super)datasets can be <strong>queried</strong> for all available metadata of any content,
@@ -341,8 +693,9 @@ index 0000000..fabf852
         <li>DataLad can serve as a transport layer for metadata</li>
     </ul>
     <note><a href="http://docs.datalad.org/en/latest/metadata.html#internal-metadata-representation">http://docs.datalad.org/en/latest/metadata.html#internal-metadata-representation</a></note>
-</section>
+  </section>
 
+<!-- too much
 <section>
 <h2>Example JSON-LD metadata structure</h2>
 <pre><code class="json" style="max-height:none">{
@@ -381,8 +734,9 @@ index 0000000..fabf852
 </code></pre>
 <p><small>a true graph with defined terms, but processable without a graph representation</small></p>
 </section>
+-->
 
-<section>
+  <section>
     <h2>Metadata-based search for individual files</h2>
     <p style="margin-top:-1em">across datasets, without a DB (server)</p>
     <pre style="margin-top:-.5em"><code class="bash" style="max-height:none">$ datalad \
@@ -405,10 +759,10 @@ search(ok): /home/yoh/datalad/openfmri/ds000005/sub-07/anat/sub-07_T1w.nii.gz (f
 search(ok): /home/yoh/datalad/openfmri/ds000006/sub-14/ses-retest/anat/sub-14_ses-retest_T1w.nii.gz (file)
 ...
     </code></pre>
-</section>
+  </section>
 
 
-<section>
+  <section>
     <h2>Metadata-based search for individual files (lots of metadata)</h2>
     <p style="margin-top:-1em">across datasets, without a DB (server)</p>
     <pre style="margin-top:-.5em"><code class="bash" style="max-height:none">$ datalad \
@@ -444,29 +798,16 @@ search(ok): /home/yoh/datalad/openfmri/ds000006/sub-14/ses-retest/anat/sub-14_se
 ...
     </code></pre>
     <p style="margin-top:-.5em">alternative output formats: JSON stream, custom, ...</p>
+  </section>
 </section>
 
 <section>
-    <h2>Publish</h2>
-
-    <ul>
-        <li>Wide variety of supported storage solutions (SSH-servers, GIN, DropBox, Box.com, Google,
-          WEBDAV, bittorrent, IPFS, ...) via Git-annex</li>
-		<li><a href="http://datasets.datalad.org">datasets.datalad.org</a>
-		is just a sample of a "datalad publish"-ed dataset</a>
-        <li>Full support for data encryption</li>
-        <li>Multiple redundant synchronized publication targets are supported ("publish 2TB on GitHub")</li>
-        <li>Per-target configuration of accepted content, with dedicated set of permissions and authorization mechanisms</li>
-        <li>Export of dataset to FigShare and similar storage solutions</li>
-    </ul>
-</section>
-
-<section>
+  <section>
     <h2>Extend DataLad</h2>
 
 	<p style="margin-top:1em;text-align:left">Besides being integrated/used by the projects
-	  (e.g. <a href="https://github.com/nipy/heudiconv/">HeudiConv</a>,
-	  <a href="https://github.com/OpenNeuroOrg/datalad-service">OpenNeuroOrg/datalad-service</a>)
+	  <!--(e.g. <a href="https://github.com/nipy/heudiconv/">HeudiConv</a>,
+	  <a href="https://github.com/OpenNeuroOrg/datalad-service">OpenNeuroOrg/datalad-service</a>)-->
 	  DataLad itself (interface) could be extended:
     <ul>
         <li>Separate Python packages, anybody can develop their own</li>
@@ -486,9 +827,7 @@ search(ok): /home/yoh/datalad/openfmri/ds000006/sub-14/ses-retest/anat/sub-14_se
 
     </ul>
     <note><a href="http://docs.datalad.org/en/latest/customization.html#extension-packages">http://docs.datalad.org/en/latest/customization.html#extension-packages</a></note>
-</section>
-
-
+  </section>
 </section>
 
 <section>
@@ -513,7 +852,7 @@ encyption, authorization
       <td style="vertical-align:middle">
   <ul>
       <!-- <li>Yaroslav Halchenko</li> -->
-      <li>Michael Hanke</li>
+      <!-- in authors <li>Michael Hanke</li> -->
       <li>Joey Hess (git-annex)</li>
       <li>Benjamin Poldrack</li>
       <li>Kyle Meyer</li>
@@ -533,12 +872,12 @@ encyption, authorization
   </tr>
   </table>
 <p>
-  Slides: <a href="https://github.com/datalad/talk-openneuro-2018">https://github.com/datalad/talk-openneuro-2018</a><br />
+  Slides: <a href="https://github.com/datalad/talk-2019-mila">https://github.com/datalad/talk-2019-mila</a><br />
   Website: <a href="http://datalad.org">http://datalad.org</a><br />
 	Development: <a href="http://github.com/datalad">http://github.com/datalad</a><br />
 	Announcements: <a href="http://twitter.com/datalad">http://twitter.com/datalad</a><br />
   Chat: <a href="https://matrix.to/#/#datalad:matrix.org">https://matrix.to/#/#datalad:matrix.org</a><br />
-  Data (>50TBs): <a href="http://datasets.datalad.org">http://datasets.datalad.org</a></p>
+  Data (>60TBs): <a href="http://datasets.datalad.org">http://datasets.datalad.org</a></p>
 </section>
 
 
