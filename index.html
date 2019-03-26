@@ -474,7 +474,7 @@ index 0000000..fabf852
 
 <section data-transition="default fade-out">
   <h2>Data provenance capture</h2>
-  <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
+  <p><emph>datalad run</emph> is a helper to automate recording results of running a command</p>
   <pre><code class="bash" style="max-height:none">cifar/ $ datalad run -m "My first preprocessing" \
 	  --input data/rawdata/cifar-10-batches-py \
 	  python ./code/preprocessing.py data/rawdata data/preproc1 100
@@ -498,8 +498,9 @@ cifar/ $ git tag run-preproc1
 
 <section data-transition="none">
   <h2>Data provenance capture</h2>
-  <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
-  <pre><code class="bash" style="max-height:none">cifar/ $> git show --stat
+<p><emph>run</emph> record is a json record within the commit message</p>
+
+<pre><code class="bash" style="max-height:none">cifar/ $> git show --stat
 commit 35e166c9b86dfc2640f4638aba890e6b656da02d (HEAD -> master)
 Author: Yaroslav Halchenko &lt;debian@onerussian.com&gt;
 
@@ -515,9 +516,7 @@ Author: Yaroslav Halchenko &lt;debian@onerussian.com&gt;
      "inputs": [
       "data/rawdata/cifar-10-batches-py"
      ],
-     "outputs": [
-      "data/preproc1"
-     ],
+     "outputs": [],
      "pwd": "."
     }
     ^^^ Do not change lines above ^^^
@@ -527,6 +526,31 @@ Author: Yaroslav Halchenko &lt;debian@onerussian.com&gt;
  2 files changed, 2 insertions(+)
 </code></pre>
 </section>
+
+<section data-transition="none">
+  <h2>Data provenance reuse</h2>
+  <p><emph>run</emph> json record(s) can be reused to rerun the command</p>
+  <pre><code class="bash" style="max-height:none">cifar/ $> datalad rerun
+[INFO   ] Making sure inputs are available (this may take some time) 
+unlock(ok): data/preproc1/test-100.h5 (file)
+unlock(ok): data/preproc1/train-100.h5 (file)
+[INFO   ] == Command start (output follows) ===== 
+Creating training dataset: batch 500/500
+Creating test dataset: batch 100/100
+[INFO   ] == Command exit (modification check follows) ===== 
+add(ok): data/preproc1/test-100.h5 (file)
+add(ok): data/preproc1/train-100.h5 (file)
+action summary:
+  add (ok: 2)
+  get (notneeded: 2)
+  save (notneeded: 1)
+  unlock (ok: 2)
+
+cifar/ $ git log run-preproc1..
+cifar/ $
+</code></pre>
+</section>
+
 </section>
 
 <section>
