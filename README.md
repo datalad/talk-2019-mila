@@ -1,10 +1,10 @@
 # DataLad
 
 Talk on DataLad's data management capabilities, how it aids open science
-efforts and helps achieve improved reproducibility in a FAIR way.
-Heavily based on the Bernstein Go Fair talk by Michael Hanke.
-Presented at the OpenNeuro kick-off meeting, Stanford, 2018 by
-Yaroslav O. Halchenko.
+efforts and helps achieve improved reproducibility in a FAIR way.  Heavily
+based on the Bernstein Go Fair talk by Michael Hanke, then with mods for
+OpenNeuro kick-off meeting, Stanford, 2018 by Yaroslav O. Halchenko, and
+finally expanded for MILA.
 
 URLs in the slides ATM are tuned for offline presentation.
 
