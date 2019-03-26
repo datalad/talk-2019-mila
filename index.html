@@ -206,7 +206,7 @@ DESCRIPTION
 
 
 <section data-transition="fade">
-<section>
+  <section>
     <h2>Datalad principles</h2>
     <ul style="font-size:120%">
         <li style="margin-bottom:1em">There are only two things in the world: <strong>datasets and files</strong></li>
@@ -221,27 +221,39 @@ DESCRIPTION
         3rd-party data resources and infrastructure re-use</strong></li>
     </ul>
 
-</section>
+  </section>
 
-<section>
-  <h2>Dataset: tracking content and/or its identifiers</h2>
-  <img style="" data-src="pics/dataset_concept.png">
-  <dl>
+  <section data-transition="zoom">
+	<h2>DataLad in one figure</h2>
+	<img style="" data-src="pics/datalad_process_tuned/00base_preview.png">
+  </section>
+
+  <!--
+  <section>
+	<h2>Dataset: tracking content and/or its identifiers</h2>
+	<img style="" data-src="pics/dataset_concept.png">
+	<dl>
       <dt>Dataset ID, Dataset annex (local) storage ID</dt><dd>two distinct UUIDs</dd>
       <dt>Dataset version (Git repository state)</dt><dd>SHASUM (+
       git tags, "git describe")</dd>
-  <dt>File</dt><dd>git-annex key - configurable checksum (file content based)</dd>
-  </dl>
-</section>
+	  <dt>File</dt><dd>git-annex key - configurable checksum (file content based)</dd>
+	</dl>
+  </section>
+  -->
 </section>
 
 <section>
+  <section>
+	<h2>Install</h2>
+	<img style="" data-src="pics/datalad_process_tuned/install_preview.png">
+  </section>
+
   <section data-transition="fade">
     <h2>Install an existing dataset</h2>
     <img data-src="pics/dl_download_ds02.png">
     <p style="margin-top:-4em">request via standard URL</p>
     <pre class="codefootnote"><code class="bash">$ datalad install http://datasets.datalad.org/cifar</code></pre>
-    <p style="margin-top:-0em">or a shortcut</p>
+    <p style="margin-top:-0em">or a shortcut (to refer to http://datasets.datalad.org>datasets.datalad.org<</p>
     <pre class="codefootnote"><code class="bash">$ datalad install ///cifar</code></pre>
 
 	<ul>
@@ -302,6 +314,11 @@ numcopies.)]</code></pre>
 <!-- Creating an populating -->
 
 <section>
+  <section>
+	<h2>Create</h2>
+	<img style="" data-src="pics/datalad_process_tuned/create_preview.png">
+  </section>
+
   <section data-transition="fade">
     <h2>Create a new dataset from scratch</h2>
     <p style="margin-top:4em">One simple command</p>
@@ -343,6 +360,11 @@ index 0000000..54d7bcd
 @@ -0,0 +1 @@
 +.git/annex/objects/P0/vx/MD5E-s18681--b1d886e662133db668c4bf2ed1b6dfab.dat/MD5E-s18681--b1d886e662133db668c4bf2ed1b6dfab.dat
 	</code></pre>
+  </section>
+
+  <section>
+	<h2>Crawl</h2>
+	<img style="" data-src="pics/datalad_process_tuned/crawl_preview.png">
   </section>
 
     <section data-transition="fade">
@@ -404,10 +426,15 @@ batches.meta  data_batch_1  data_batch_2  data_batch_3 ...
 </section>
 
 <section>
-<section>
-  <h2>Dataset linkage</h2>
-<img data-src="pics/dataset_linkage.png">
-<pre><code class="diff" style="max-height:none">$ datalad install --dataset . --source ///cifar data/rawdata
+  <section>
+	<h2>Dataset linkage</h2>
+	<img style="" data-src="pics/datalad_process_tuned/nesting_preview.png">
+  </section>
+
+  <section>
+	<h2>Dataset linkage</h2>
+	<img data-src="pics/dataset_linkage.png">
+	<pre><code class="diff" style="max-height:none">$ datalad install --dataset . --source ///cifar data/rawdata
 
 $ git diff HEAD~1
 diff --git a/.gitmodules b/.gitmodules
@@ -426,8 +453,8 @@ index 0000000..fabf852
 +++ b/inputs/rawdata
 @@ -0,0 +1 @@
 +Subproject commit 0000f59a5e68cf035931e78ed61b6327fbc3bdba
-</code></pre>
-</section>
+	</code></pre>
+  </section>
 
 <section>
   <h2>Arbitrarily deep dataset nesting</h2>
@@ -439,6 +466,11 @@ index 0000000..fabf852
 </section>
 
 <section>
+  <section>
+	<h2>Data provenance capture</h2>
+	<img style="" data-src="pics/datalad_process_tuned/run_preview.png">
+  </section>
+
 <section data-transition="default fade-out">
   <h2>Data provenance capture</h2>
   <img style="margin:-20px" data-src="pics/dataset_linkage_provenance.png">
@@ -498,6 +530,11 @@ Author: Yaroslav Halchenko &lt;debian@onerussian.com&gt;
 
 <section>
   <section>
+	<h2>Publish</h2>
+	<img style="" data-src="pics/datalad_process_tuned/publish_preview.png">
+  </section>
+
+  <section>
     <h2>Publish</h2>
 
     <ul>
@@ -537,6 +574,11 @@ publish(ok): . (dataset) [pushed to github: ['[new branch]', '[new branch]']]</c
   </section>
 
   <section>
+	<h2>Publish (export) to FigShare</h2>
+	<img style="" data-src="pics/datalad_process_tuned/export_preview.png">
+  </section>
+
+  <section>
   <h2>Publish to FigShare (to share preprocessed data)</h2>
   <!-- IMG TODO -->
   <p>FigShare provides public publishing of datasets (no updates, like an "article")</p>
@@ -565,6 +607,11 @@ publish(ok): . (dataset) [pushed to github: ['[up to date]', '47e2519..be2279b']
 
 <section>
   <section>
+	<h2>Data provenance capture</h2>
+	<img style="" data-src="pics/datalad_process_tuned/run_preview.png">
+  </section>
+
+  <section>
 	<h2>Run anywhere: prepare a containerized environment</h2>
 	<p>Not everyone has an environment I have!</p>
 	<p>Prepare a Singularity container recipe for the environment:</p>
@@ -590,7 +637,6 @@ publish(ok): . (dataset) [pushed to github: ['19aa3a..47e251', '[up to date]']]<
 	  <li>Enabled GitHub repo on <a href="https://www.singularity-hub.org">https://www.singularity-hub.org</a></li>
 	  <li>In a few minutes my Singularity container was created in the cloud</li>
 	</ul>
-
   </section>
 
   <section>
@@ -671,6 +717,11 @@ Not comparable: &lt;/dim_4&gt; or &lt;/dim_4&gt; is an empty dataset</code></pre
 </section>
 
 <section>
+  <section>
+	<h2>Metadata</h2>
+	<img style="" data-src="pics/datalad_process_tuned/metadata_preview.png">
+  </section>
+
   <section>
     <h2>(Automated) Metadata logistics</h2>
     <ul>
