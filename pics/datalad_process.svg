@@ -270,7 +270,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="actions-bg"
-     style="display:inline;opacity:0.478">
+     style="display:none;opacity:0.478">
     <g
        transform="translate(0,-225)"
        id="g315">
@@ -972,7 +972,8 @@
     <g
        inkscape:groupmode="layer"
        id="layer4"
-       inkscape:label="superds">
+       inkscape:label="superds"
+       style="display:inline">
       <g
          id="g798">
         <rect
@@ -1415,7 +1416,7 @@
        inkscape:label="nesting"
        style="display:inline">
       <g
-         id="g849"
+         id="g_nesting"
          transform="translate(0.17056701)">
         <path
            inkscape:connector-curvature="0"
